@@ -59,4 +59,5 @@
             implementation("com.squareup.okhttp3:okhttp:4.12.0")
             implementation("androidx.datastore:datastore-preferences:1.3.0")
 implementation("androidx.compose.material:material-icons-extended:1.7.8")
+implementation("androidx.room:room-runtime:2.8.5")
         }

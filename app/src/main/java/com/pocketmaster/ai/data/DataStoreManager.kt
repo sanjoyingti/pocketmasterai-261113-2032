@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.preferencesEditor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.map
  */
 class DataStoreManager internal constructor(private val context: Context) {
 
-    val preferences: DataStore<Preferences> = context.preferencesDataStore
+    val preferences: DataStore<Preferences> by context.preferencesDataStore
 
     /** Read a string value (or defaultValue). */
     suspend fun getString(key: Preferences.Key<String>, defaultValue: String = ""): String {
@@ -63,6 +64,3 @@ class DataStoreManager internal constructor(private val context: Context) {
             instance ?: DataStoreManager(context).also { instance = it }
     }
 }
-
-val Context.preferencesDataStore: DataStore<Preferences>
-    get() = preferencesDataStore(name = "pocketmaster_preferences")
