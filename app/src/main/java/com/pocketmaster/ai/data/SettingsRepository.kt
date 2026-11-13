@@ -1,12 +1,7 @@
 package com.pocketmaster.ai.data
 
 import android.content.Context
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
 /**
@@ -41,39 +36,39 @@ class SettingsRepository internal constructor(
     }
 
     /** Current provider type: GEMINI or CUSTOM. */
-    val providerType: Flow<String> = dataStoreManager.preferences.map { it[PROVIDER_TYPE] ?: "GEMINI" }
+    val providerType: Flow<String> = dataStoreManager.getString(PROVIDER_TYPE, "GEMINI")
 
     /** API key (provider-specific). */
-    val apiKey: Flow<String> = dataStoreManager.preferences.map { it[API_KEY] ?: "" }
+    val apiKey: Flow<String> = dataStoreManager.getString(API_KEY, "")
 
     /** Custom base URL. */
-    val baseUrl: Flow<String> = dataStoreManager.preferences.map { it[BASE_URL] ?: "" }
+    val baseUrl: Flow<String> = dataStoreManager.getString(BASE_URL, "")
 
     /** Selected Gemini model. */
-    val geminiModel: Flow<String> = dataStoreManager.preferences.map { it[GEMINI_MODEL] ?: "gemini-2.5-flash" }
+    val geminiModel: Flow<String> = dataStoreManager.getString(GEMINI_MODEL, "gemini-2.5-flash")
 
     /** OAuth token for Google Sign-In. */
-    val oauthToken: Flow<String?> = dataStoreManager.preferences.map { it[GEMINI_OAUTH_TOKEN] }
+    val oauthToken: Flow<String?> = dataStoreManager.dataStore.data.map { prefs -> prefs[GEMINI_OAUTH_TOKEN] }
 
     /** OAuth client ID. */
-    val clientId: Flow<String> = dataStoreManager.preferences.map { it[GEMINI_CLIENT_ID] ?: "" }
+    val clientId: Flow<String> = dataStoreManager.getString(GEMINI_CLIENT_ID, "")
 
     /** Search provider: DUCK_DUCK_GO or GOOGLE_CSE. */
-    val searchProvider: Flow<String> = dataStoreManager.preferences.map { it[SEARCH_PROVIDER] ?: "DUCK_DUCK_GO" }
+    val searchProvider: Flow<String> = dataStoreManager.getString(SEARCH_PROVIDER, "DUCK_DUCK_GO")
 
     /** Google CSE ID. */
-    val googleCseId: Flow<String> = dataStoreManager.preferences.map { it[GOOGLE_CSE_ID] ?: "" }
+    val googleCseId: Flow<String> = dataStoreManager.getString(GOOGLE_CSE_ID, "")
 
     /** Google CSE API key. */
-    val googleCseApiKey: Flow<String> = dataStoreManager.preferences.map { it[GOOGLE_CSE_API_KEY] ?: "" }
+    val googleCseApiKey: Flow<String> = dataStoreManager.getString(GOOGLE_CSE_API_KEY, "")
 
     /** Last used navigation tab index. */
-    val lastUsedTab: Flow<Int> = dataStoreManager.preferences.map { it[LAST_USED_TAB] ?: 0 }
+    val lastUsedTab: Flow<Int> = dataStoreManager.getInt(LAST_USED_TAB, 0)
 
     // Tone rules
-    val strictValidation: Flow<Boolean> = dataStoreManager.preferences.map { it[STRICT_VALIDATION] ?: true }
-    val rangeClamp: Flow<Boolean> = dataStoreManager.preferences.map { it[RANGE_CLAMP] ?: true }
-    val webSearchDefault: Flow<Boolean> = dataStoreManager.preferences.map { it[WEB_SEARCH_DEFAULT] ?: true }
+    val strictValidation: Flow<Boolean> = dataStoreManager.getBoolean(STRICT_VALIDATION, true)
+    val rangeClamp: Flow<Boolean> = dataStoreManager.getBoolean(RANGE_CLAMP, true)
+    val webSearchDefault: Flow<Boolean> = dataStoreManager.getBoolean(WEB_SEARCH_DEFAULT, true)
 
     /** Whether OAuth + client ID appear configured. Exposed as a Flow for Compose state. */
     val hasOAuth: Flow<Boolean> = clientId.map { it.isNotEmpty() }
@@ -82,7 +77,7 @@ class SettingsRepository internal constructor(
     suspend fun saveApiKey(key: String) = dataStoreManager.save(API_KEY, key)
     suspend fun saveBaseUrl(url: String) = dataStoreManager.save(BASE_URL, url)
     suspend fun saveGeminiModel(model: String) = dataStoreManager.save(GEMINI_MODEL, model)
-    suspend fun saveOauthToken(token: String?) = dataStoreManager.save(GEMINI_OAUTH_TOKEN, token)
+    suspend fun saveOauthToken(token: String?) = dataStoreManager.edit { prefs -> prefs[GEMINI_OAUTH_TOKEN] = token }
     suspend fun saveClientId(clientId: String) = dataStoreManager.save(GEMINI_CLIENT_ID, clientId)
     suspend fun saveSearchProvider(provider: String) = dataStoreManager.save(SEARCH_PROVIDER, provider)
     suspend fun saveGoogleCseId(id: String) = dataStoreManager.save(GOOGLE_CSE_ID, id)
