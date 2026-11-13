@@ -2,7 +2,7 @@
             id("com.android.application")
             id("org.jetbrains.kotlin.plugin.compose")
             id("org.jetbrains.kotlin.plugin.serialization")
-            
+            id("com.google.devtools.ksp")
         }
 
         android {
@@ -60,4 +60,5 @@
             implementation("androidx.datastore:datastore-preferences:1.3.0")
 implementation("androidx.compose.material:material-icons-extended:1.7.8")
 implementation("androidx.room:room-runtime:2.8.5")
+ksp("androidx.room:room-compiler:2.8.5")
         }
