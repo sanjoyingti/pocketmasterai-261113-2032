@@ -22,11 +22,8 @@ object WebSearchRepository {
     private val cache = ConcurrentHashMap<String, CacheEntry>()
     private const val CACHE_TTL_MS = TimeUnit.MINUTES.toMillis(5)
 
-    /** Search results for a query. */
-    data class SearchResult(val title: String, val link: String, val snippet: String)
-
     /** Search a query; returns structured results or empty list. */
-    suspend fun search(query: String, provider: String = "DUCK_DUCK_GO"): List<SearchResult> {
+    suspend fun search(query: String, provider: String = "DUCK_DUCK_GO", context: com.pocketmaster.ai.data.SettingsRepository = Companion.settings): List<SearchResult> {
         return withContext(Dispatchers.IO) {
             // Check cache
             val cached = cache[query]
@@ -35,7 +32,7 @@ object WebSearchRepository {
             } else {
                 val results = when (provider) {
                     "DUCK_DUCK_GO" -> searchDuckDuckGo(query)
-                    "GOOGLE_CSE" -> searchGoogleCse(query)
+                    "GOOGLE_CSE" -> searchGoogleCse(query, context)
                     else -> searchDuckDuckGo(query)
                 }
                 cache[query] = CacheEntry(results, System.currentTimeMillis())
@@ -87,11 +84,10 @@ object WebSearchRepository {
     }
 
     /** Google Custom Search Engine via CSE JSON (requires CSE ID + API key). */
-    private suspend fun searchGoogleCse(query: String): List<SearchResult> {
+    private suspend fun searchGoogleCse(query: String, settings: com.pocketmaster.ai.data.SettingsRepository): List<SearchResult> {
         return withContext(Dispatchers.IO) {
-            val settings = SettingsRepository
-            val cseId = settings.googleCseId.value
-            val cseKey = settings.googleCseApiKey.value
+            val cseId = settings.googleCseId.first()
+            val cseKey = settings.googleCseApiKey.first()
             if (cseId.isBlank() || cseKey.isBlank()) return@withContext emptyList()
             val encoded = URLEncoder.encode(query, "UTF-8")
             val url = URL("https://www.googleapis.com/customsearch/v1?key=$cseKey&cx=$cseId&q=$encoded")

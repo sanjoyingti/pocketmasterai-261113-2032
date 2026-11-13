@@ -24,7 +24,7 @@ class AppContainer private constructor(
 
     // ---------- MIDI hardware ----------
     val protocol = PocketMasterProtocol
-    val midiManager = PocketMasterMidiManager(app)
+    val midiManager = PocketMasterMidiManager.create(app)
     val commandQueue = CommandQueue.get
     val deviceMapRepo = DeviceMapRepository.create(app)
 

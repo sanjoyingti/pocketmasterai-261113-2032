@@ -6,6 +6,7 @@ import com.pocketmaster.ai.provider.ToolMessage
 import com.pocketmaster.ai.provider.ToolMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import okhttp3.Call
 import okhttp3.Callback
@@ -15,8 +16,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import okhttp3.sse.EventSourceListener
-import okhttp3.sse.EventSources
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
@@ -48,8 +47,8 @@ class OpenAiCompatProvider(
 
     override suspend fun init() {
         withContext(Dispatchers.IO) {
-            baseUrl = settings.baseUrl.value.trimEnd('/')
-            apiKey = settings.apiKey.value
+            baseUrl = settings.baseUrl.first().trimEnd('/')
+            apiKey = settings.apiKey.first()
             val builder = OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)

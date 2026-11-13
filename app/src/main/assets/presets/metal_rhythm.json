@@ -1,10 +1,15 @@
 {
   "name": "Metal Rhythm",
-  "order": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "order": [0, 2, 3, 4, 5, 6, 7, 8, 1],
   "blocks": [
-    {"pos": 1, "model": "DRV", "on": true, "params": {"Drive": 0.9, "Tone": 0.3}},
-    {"pos": 3, "model": "AMP", "on": true, "params": {"Gain": 0.9, "Bass": 0.7, "Mid": 0.5, "Treble": 0.7, "Presence": 0.6}},
-    {"pos": 5, "model": "EQ", "on": true, "params": {"Bass": 0.6, "Mid": 0.4, "Treble": 0.8}}
+    { "pos": 0, "model": "COMP", "on": true, "params": {} },
+    { "pos": 2, "model": "DRV", "on": true, "params": { "Drive": 0.85, "Tone": 0.55 } },
+    { "pos": 3, "model": "AMP", "on": true, "params": { "Gain": 0.8, "Bass": 0.6, "Mid": 0.65, "Treble": 0.5, "Presence": 0.45 } },
+    { "pos": 4, "model": "CAB/IR", "on": true, "params": {} },
+    { "pos": 5, "model": "EQ", "on": true, "params": { "Bass": 0.7, "Mid": 0.6, "Treble": 0.45 } },
+    { "pos": 6, "model": "MOD", "on": false, "params": {} },
+    { "pos": 7, "model": "DLY", "on": false, "params": {} },
+    { "pos": 8, "model": "RVB", "on": false, "params": {} }
   ],
   "volume": 0.75
 }

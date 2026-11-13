@@ -1,10 +1,15 @@
 {
   "name": "Clean Ambient",
-  "order": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "order": [0, 2, 3, 4, 5, 6, 7, 8, 1],
   "blocks": [
-    {"pos": 3, "model": "AMP", "on": true, "params": {"Gain": 0.4, "Bass": 0.5, "Mid": 0.5, "Treble": 0.6, "Presence": 0.5}},
-    {"pos": 6, "model": "MOD", "on": true, "params": {"Rate": 0.4, "Depth": 0.6}},
-    {"pos": 8, "model": "RVB", "on": true, "params": {"Decay": 0.8}}
+    { "pos": 0, "model": "COMP", "on": true, "params": {} },
+    { "pos": 2, "model": "DRV", "on": false, "params": {} },
+    { "pos": 3, "model": "AMP", "on": true, "params": { "Gain": 0.35, "Bass": 0.5, "Mid": 0.6, "Treble": 0.6, "Presence": 0.55 } },
+    { "pos": 4, "model": "CAB/IR", "on": true, "params": {} },
+    { "pos": 5, "model": "EQ", "on": true, "params": { "Bass": 0.45, "Mid": 0.55, "Treble": 0.55 } },
+    { "pos": 6, "model": "MOD", "on": true, "params": { "Rate": 0.4, "Depth": 0.6 } },
+    { "pos": 7, "model": "DLY", "on": true, "params": { "Time": 0.45, "FBack": 0.35 } },
+    { "pos": 8, "model": "RVB", "on": true, "params": { "Decay": 0.7 } }
   ],
-  "volume": 0.6
+  "volume": 0.8
 }
