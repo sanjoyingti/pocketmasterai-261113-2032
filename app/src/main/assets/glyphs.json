@@ -1,0 +1,12 @@
+{
+  "icons": [
+    {"name": "amp", "glyph": "amp"},
+    {"name": "drv", "glyph": "overdrive"},
+    {"name": "comp", "glyph": "compressor"},
+    {"name": "cab", "glyph": "speaker"},
+    {"name": "eq", "glyph": "equalizer"},
+    {"name": "mod", "glyph": "modulation"},
+    {"name": "dly", "glyph": "repeat"},
+    {"name": "rvb", "glyph": "reverb"}
+  ]
+}

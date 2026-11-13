@@ -1,0 +1,34 @@
+[
+  {"name": "COMP", "code": "0x100001", "group": "0x1", "module": "comp", "block": "0", "onOff": true, "params": []},
+  {"name": "DRV", "code": "0x100002", "group": "0x1", "module": "drv", "block": "2", "onOff": true, "params": [
+    {"key": "Drive", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "Tone", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5}
+  ]},
+  {"name": "AMP", "code": "0x100003", "group": "0x1", "module": "amp", "block": "3", "onOff": true, "params": [
+    {"key": "Gain", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "Bass", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "Mid", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "Treble", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "Presence", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5}
+  ]},
+  {"name": "CAB/IR", "code": "0x100004", "group": "0x1", "module": "cab", "block": "4", "onOff": true, "params": []},
+  {"name": "EQ", "code": "0x100005", "group": "0x1", "module": "eq", "block": "5", "onOff": true, "params": [
+    {"key": "Bass", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "Mid", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "Treble", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5}
+  ]},
+  {"name": "MOD", "code": "0x100006", "group": "0x1", "module": "mod", "block": "6", "onOff": true, "params": [
+    {"key": "Rate", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "Depth", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5}
+  ]},
+  {"name": "DLY", "code": "0x100007", "group": "0x1", "module": "dly", "block": "7", "onOff": true, "params": [
+    {"key": "Time", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5},
+    {"key": "FBack", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5}
+  ]},
+  {"name": "RVB", "code": "0x100008", "group": "0x1", "module": "rvb", "block": "8", "onOff": true, "params": [
+    {"key": "Decay", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5}
+  ]},
+  {"name": "MASTER", "code": "0x100009", "group": "0x1", "module": "master", "block": "8", "onOff": true, "params": [
+    {"key": "Vol", "type": "float", "min": 0.0, "max": 1.0, "step": 0.01, "default": 0.5}
+  ]}
+]

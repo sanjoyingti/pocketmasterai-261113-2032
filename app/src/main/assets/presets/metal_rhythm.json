@@ -1,0 +1,10 @@
+{
+  "name": "Metal Rhythm",
+  "order": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "blocks": [
+    {"pos": 1, "model": "DRV", "on": true, "params": {"Drive": 0.9, "Tone": 0.3}},
+    {"pos": 3, "model": "AMP", "on": true, "params": {"Gain": 0.9, "Bass": 0.7, "Mid": 0.5, "Treble": 0.7, "Presence": 0.6}},
+    {"pos": 5, "model": "EQ", "on": true, "params": {"Bass": 0.6, "Mid": 0.4, "Treble": 0.8}}
+  ],
+  "volume": 0.75
+}

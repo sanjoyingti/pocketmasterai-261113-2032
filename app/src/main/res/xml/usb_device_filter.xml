@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pocket Master: vendor-defined MIDI class 0xff, subclass 0x00, protocol 0x01 -->
+    <usb-device class="0xff" subclass="0x00" protocol="0x01" />
+    <!-- Standard USB audio/MIDI class 0x01, subclass 0x01, protocol 0x00 -->
+    <usb-device class="0x01" subclass="0x01" protocol="0x00" />
+</resources>

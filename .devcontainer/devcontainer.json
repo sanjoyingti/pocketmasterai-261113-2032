@@ -1,0 +1,9 @@
+{
+  "name": "Android build",
+  "image": "mcr.microsoft.com/devcontainers/java:21",
+  "features": {
+    "ghcr.io/devcontainers/features/android-sdk:1": {}
+  },
+  "onCreateCommand": "chmod +x gradlew || true",
+  "customizations": { "vscode": { "extensions": ["redhat.java", "vscjava.vscode-gradle"] } }
+}
