@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.datastore.preferences.preferencesDataStore
 
 /**
  * Wraps AndroidX DataStore Preferences:
@@ -18,7 +18,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 class DataStoreManager internal constructor(private val context: Context) {
 
     /** The app-level DataStore instance (created in the companion object). */
-    private val dataStore: DataStore<Preferences> = context.preferencesDataStoreFile("pocketmaster_settings")
+    private val dataStore: DataStore<Preferences> = context.preferencesDataStore("pocketmaster_settings")
 
     companion object {
         private var instance: DataStoreManager? = null
@@ -27,15 +27,15 @@ class DataStoreManager internal constructor(private val context: Context) {
     }
 
     /** Read a string value (or defaultValue) as a Flow. */
-    fun getString(key: Preferences.Key<String>, defaultValue: String = "") =
+    fun getString(key: Preferences.Key<String>, defaultValue: String = ""): Flow<String> =
         dataStore.data.map { prefs -> prefs[key] ?: defaultValue }
 
     /** Read an int value as a Flow. */
-    fun getInt(key: Preferences.Key<Int>, defaultValue: Int = 0) =
+    fun getInt(key: Preferences.Key<Int>, defaultValue: Int = 0): Flow<Int> =
         dataStore.data.map { prefs -> prefs[key] ?: defaultValue }
 
     /** Read a boolean value as a Flow. */
-    fun getBoolean(key: Preferences.Key<Boolean>, defaultValue: Boolean = false) =
+    fun getBoolean(key: Preferences.Key<Boolean>, defaultValue: Boolean = false): Flow<Boolean> =
         dataStore.data.map { prefs -> prefs[key] ?: defaultValue }
 
     /** Write a string value. */
@@ -54,7 +54,7 @@ class DataStoreManager internal constructor(private val context: Context) {
     }
 
     /** Edit multiple keys in one transaction. */
-    suspend fun edit(block: suspend (Preferences) -> Unit) {
+    suspend fun edit(block: suspend (MutablePreferences) -> Unit) {
         dataStore.edit { prefs -> block(prefs) }
     }
 
