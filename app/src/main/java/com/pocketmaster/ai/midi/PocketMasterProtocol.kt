@@ -172,7 +172,7 @@ object PocketMasterProtocol {
 
     /** Encode param command (0x48): module + param + float32 + total 5. */
     fun encodeParam(module: Int, param: Int, value: Float): ByteArray {
-        return byteArrayOf(CMD_PARAM.toByte(), module, param, total = 5) + encodeFloat(value)
+        return byteArrayOf(CMD_PARAM.toByte(), module, param, 5) + encodeFloat(value)
     }
 
     /** Encode state command (0x49): module + on/off + total 3. */
@@ -219,6 +219,3 @@ object PocketMasterProtocol {
         return java.lang.Float.intBitsToFloat(toRawIntBits())
     }
 }
-
-/** Encode a param command with explicit total. */
-private fun ByteArray.appendTotal(total: Int): ByteArray = this + total.toByte()

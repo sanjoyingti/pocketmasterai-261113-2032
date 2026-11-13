@@ -9,7 +9,6 @@ import android.hardware.usb.UsbConstants.USB_SUBCLASS_MIDI
 import android.hardware.usb.UsbConstants.USB_PROTOCOL_MIDI
 import android.hardware.usb.UsbManager
 import android.media.midi.MidiManager
-import android.media.midi.MidiManager.ConnectionCallback
 import android.media.midi.Synthesizer
 import android.os.Handler
 import com.pocketmaster.ai.hardware.usb.AutoReconnectService
@@ -26,7 +25,7 @@ import kotlinx.coroutines.withContext
  * - Reads and reassembles multi-packet SysEx
  * - Edit-buffer dump polling in read-only mode
  */
-class PocketMasterMidiManager(private val context: Context) {
+class PocketMasterMidiManager private constructor(private val context: Context) {
 
     private var midiManager: MidiManager? = null
     private var device: Synthesizer? = null

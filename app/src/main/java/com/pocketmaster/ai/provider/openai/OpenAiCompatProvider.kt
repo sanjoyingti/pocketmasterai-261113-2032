@@ -11,6 +11,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.EventListener
+import okhttp3.EventListenerFactory
+import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -52,9 +54,11 @@ class OpenAiCompatProvider(
             val builder = OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
-                .eventListener(object : EventListener() {
-                    override fun callFailed(call: Call, httpCall: okhttp3.HttpUrl, e: IOException) {
-                        // connection failure, swallowed
+                .eventListenerFactory(EventListenerFactory() {
+                    object : EventListener() {
+                        override fun callFailed(call: Call, httpUrl: HttpUrl, iIOException: IOException) {
+                            // connection failure, swallowed
+                        }
                     }
                 })
             if (apiKey.isNotEmpty()) {
@@ -114,9 +118,8 @@ class OpenAiCompatProvider(
                     }
 
                     override fun onResponse(call: Call, response: Response) {
-                        val source = response.body?.string()?.let { body ->
-                            parseSse(body, onText, onToolCall, onComplete, onError)
-                        }
+                        val body = response.body?.string()
+                        parseSse(body ?: "", onText, onToolCall, onComplete, onError)
                     }
                 })
             } catch (e: Exception) {
@@ -155,8 +158,9 @@ class OpenAiCompatProvider(
                                 val tc = it.getJSONArray("tool_calls")
                                 if (tc.length() > 0) {
                                     val tcObj = tc.get(0) as JSONObject
-                                    val name = tcObj.getJSONObject("function")?.getString("name")
-                                    val args = tcObj.getJSONObject("function")?.getString("arguments")
+                                    val func = tcObj.getJSONObject("function")
+                                    val name = func?.getString("name")
+                                    val args = func?.getString("arguments")
                                     name?.let { n -> onToolCall("$n($args)") }
                                 }
                             }

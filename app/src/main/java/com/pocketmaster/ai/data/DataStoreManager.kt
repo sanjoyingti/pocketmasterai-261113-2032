@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.preferencesDataStoreFile
 
 /**
  * Wraps AndroidX DataStore Preferences:
@@ -18,7 +18,7 @@ import androidx.datastore.preferences.preferencesDataStore
 class DataStoreManager internal constructor(private val context: Context) {
 
     /** The app-level DataStore instance (created in the companion object). */
-    private val dataStore: DataStore<Preferences> = context.preferencesDataStore("pocketmaster_settings")
+    private val dataStore: DataStore<Preferences> = context.preferencesDataStoreFile("pocketmaster_settings")
 
     companion object {
         private var instance: DataStoreManager? = null

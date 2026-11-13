@@ -4,6 +4,7 @@ import com.pocketmaster.ai.midi.PocketMasterProtocol
 import kotlinx.coroutines.Channel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,11 +38,14 @@ class CommandQueue private constructor() {
     }
 
     /** Send a packet (adds to channel, returns immediately). */
-    suspend fun send(data: ByteArray): Unit = channel.send(data)
+    suspend fun send(data: ByteArray) {
+        channel.send(data)
+    }
 
     /** Send a logical frame as a SysEx MIDI message. */
-    suspend fun sendFrame(cmd: Byte, payload: ByteArray, header: Byte = PocketMasterProtocol.PAYLOAD_SET): Unit =
+    suspend fun sendFrame(cmd: Byte, payload: ByteArray, header: Byte = PocketMasterProtocol.PAYLOAD_SET) {
         send(PocketMasterProtocol.toSysex(PocketMasterProtocol.logicalFrame(cmd, payload, header)))
+    }
 
     /** Send a frame without awaiting (fire and forget for logging). */
     fun sendAsync(data: ByteArray) {
@@ -62,7 +66,6 @@ class CommandQueue private constructor() {
     /** Dummy inter-packet delay (device timing, ~20ms). */
     private suspend fun sendSysex(data: ByteArray) {
         withContext(Dispatchers.Default) {
-            // Instrumented send: in real code this dispatches to MidiManager.
             Thread.sleep(20)
         }
     }

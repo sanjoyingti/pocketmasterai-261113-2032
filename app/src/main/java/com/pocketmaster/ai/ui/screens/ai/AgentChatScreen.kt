@@ -17,11 +17,6 @@ import com.pocketmaster.ai.provider.AgentOrchestrator
 import com.pocketmaster.ai.provider.ChatMessageUi
 
 /**
- * Scope holder so the orchestrator can launch coroutines — defined before use.
- */
-private val orchestratorScope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Default)
-
-/**
  * AI Agent chat screen:
  * - streaming markdown messages (user / assistant)
  * - tool execution status pill chips
@@ -38,14 +33,16 @@ fun AgentChatScreen(container: AppContainer) {
             container.chatDao,
             container.deviceMapRepo,
             container.fakeDevice,
-            orchestratorScope
+            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.Main)
         )
     }
     var message by remember { mutableStateOf("") }
     var messages by remember { mutableStateListOf<ChatMessageUi>() }
 
     LaunchedEffect(Unit) {
-        orchestrator.startSession("Tone session 1")
+        kotlinx.coroutines.launch {
+            orchestrator.startSession("Tone session 1")
+        }
     }
 
     val uiState by orchestrator.uiState.collectAsState()
@@ -61,7 +58,9 @@ fun AgentChatScreen(container: AppContainer) {
             if (uiState.hasSnapshot) {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        orchestrator.undoTone()
+                        kotlinx.coroutines.launch {
+                            orchestrator.undoTone()
+                        }
                     },
                     text = { Text("Undo Tone") },
                     icon = { androidx.compose.material.icons.Icons.Default.Undo },
@@ -98,9 +97,11 @@ fun AgentChatScreen(container: AppContainer) {
                 Button(onClick = {
                     if (message.isNotBlank()) {
                         messages.add(ChatMessageUi(role = "user", content = message))
-                        orchestrator.sendMessage(message, onMessage = { newMsg ->
-                            messages.add(newMsg)
-                        })
+                        kotlinx.coroutines.launch {
+                            orchestrator.sendMessage(message, onMessage = { newMsg ->
+                                messages.add(newMsg)
+                            })
+                        }
                         message = ""
                     }
                 }) {
