@@ -204,8 +204,5 @@ class PocketMasterMidiManager(private val context: Context) {
     }
 }
 
-private fun <T> Iterable<T>.firstOrNull(predicate: (T) -> Boolean): T? =
-    this.filter(predicate).firstOrNull()
-
 private val UsbManager.deviceList: Map<String, android.hardware.usb.UsbDevice>
     get() = deviceList

@@ -5,6 +5,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
 /**
@@ -73,6 +75,9 @@ class SettingsRepository internal constructor(
     val rangeClamp: Flow<Boolean> = dataStoreManager.preferences.map { it[RANGE_CLAMP] ?: true }
     val webSearchDefault: Flow<Boolean> = dataStoreManager.preferences.map { it[WEB_SEARCH_DEFAULT] ?: true }
 
+    /** Whether OAuth + client ID appear configured. Exposed as a Flow for Compose state. */
+    val hasOAuth: Flow<Boolean> = clientId.map { it.isNotEmpty() }
+
     suspend fun saveProviderType(type: String) = dataStoreManager.save(PROVIDER_TYPE, type)
     suspend fun saveApiKey(key: String) = dataStoreManager.save(API_KEY, key)
     suspend fun saveBaseUrl(url: String) = dataStoreManager.save(BASE_URL, url)
@@ -92,12 +97,10 @@ class SettingsRepository internal constructor(
     /** Clear all user credentials. */
     suspend fun clearCredentials() {
         dataStoreManager.edit { prefs ->
-            prefs.removeAll(listOf(API_KEY, BASE_URL, GEMINI_OAUTH_TOKEN, GEMINI_CLIENT_ID))
+            prefs[API_KEY] = ""
+            prefs[BASE_URL] = ""
+            prefs[GEMINI_OAUTH_TOKEN] = null
+            prefs[GEMINI_CLIENT_ID] = ""
         }
-    }
-
-    /** Check whether OAuth + client ID are configured. */
-    fun hasOAuth(): Boolean {
-        return clientId.value.isNotEmpty()
     }
 }

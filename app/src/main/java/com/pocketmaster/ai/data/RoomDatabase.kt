@@ -36,6 +36,7 @@ class RoomDatabase internal constructor(private val context: Context) {
 abstract class PocketMasterDatabase : androidx.room.RoomDatabase() {
     abstract val chatDao: ChatDao
 
+    @TypeConverters(Converters::class)
     companion object {
         private var instance: PocketMasterDatabase? = null
 

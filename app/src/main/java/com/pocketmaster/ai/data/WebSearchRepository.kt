@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 import java.net.URL
 import java.net.URLEncoder
 import java.util.concurrent.ConcurrentHashMap
@@ -60,7 +61,8 @@ object WebSearchRepository {
 
     private fun parseDdgResults(document: Document): List<SearchResult> {
         val results = mutableListOf<SearchResult>()
-        document.select("div.results_links").forEach { linkElem ->
+        val selector = "div.results_links > div"
+        document.select(selector).forEach { linkElem ->
             val a = linkElem.selectFirst("a.result__a")
             val snippet = linkElem.selectFirst("a.result__snippet")
             if (a != null) {
@@ -104,21 +106,19 @@ object WebSearchRepository {
     }
 
     private fun parseGoogleResults(jsonText: String): List<SearchResult> {
-        val results = mutableListOf<SearchResult>()
-        try {
-            val json = JSONObject(jsonText)
-            json.getJSONArray("items").forEach { item ->
-                val obj = item as JSONObject
-                results.add(SearchResult(
-                    title = obj.getString("title"),
-                    link = obj.getString("link"),
-                    snippet = obj.getString("snippet")
-                ))
+        return Jsoup.parse(jsonText)
+            .select("div.g")
+            .map { g ->
+                val a = g.selectFirst("a")
+                if (a == null) return@map null
+                SearchResult(
+                    title = g.selectFirst("h3")?.text().orEmpty(),
+                    link = a.attr("href"),
+                    snippet = a.nextElementSibling()?.text().orEmpty()
+                )
             }
-        } catch (e: Exception) {
-            Log.e("WebSearch", "CSE parse failed: ${e.message}")
-        }
-        return results.take(10)
+            .filterNotNull()
+            .take(10)
     }
 
     private data class CacheEntry(val results: List<SearchResult>, val ts: Long)
